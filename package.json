@@ -1,0 +1,21 @@
+{
+  "name": "prisma-debug",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "npx ts-node ./index.ts",
+    "generate": "npx prisma generate"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "~3.8.1",
+    "dotenv": "^14.3.0",
+    "chalk": "^4.1.1"
+  },
+  "devDependencies": {
+    "prisma": "~3.8.1",
+    "ts-node": "^10.7.0",
+    "typescript": "4.5.5"
+  }
+}

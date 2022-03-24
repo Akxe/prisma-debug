@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model undozak {
+  idUndo     Int          @id @default(autoincrement()) @db.UnsignedInt
+  idZak      Int          @db.UnsignedSmallInt
+  uTime      DateTime     @default(now()) @db.DateTime(0)
+  uPopis     String?      @db.VarChar(80)
+  idOsoby    Int?         @db.UnsignedSmallInt
+  aktivni    Int?         @default(0) @db.TinyInt
+  undozaknos undozaknos[]
+  undozakp   undozakp[]
+
+  @@index([idOsoby], map: "undo_osoba_idx")
+  @@index([idZak], map: "undo_zak_idx")
+}
+
+model undozaknos {
+  idUndo   Int      @db.UnsignedInt
+  idObdobi Int      @db.UnsignedSmallInt
+  ncis     Int
+  X        Boolean?
+  XZ       Boolean?
+  Aud      Boolean?
+  Obsaz    String?  @db.Char(2)
+  Motiv    Int?     @db.UnsignedSmallInt
+  PCena    Int?     @db.MediumInt
+  TCena    Int?     @db.UnsignedSmallInt
+  Pocet    Int      @default(1) @db.SmallInt
+  undozak  undozak  @relation(fields: [idUndo], references: [idUndo], onDelete: Cascade, onUpdate: NoAction, map: "undonos_zak")
+
+  @@id([idUndo, ncis, idObdobi])
+  @@index([idUndo], map: "undonos_idundo_idx")
+  @@index([ncis], map: "undonos_ncis_idx")
+  @@index([idObdobi], map: "undonos_obdobi")
+}
+
+model undozakp {
+  idUndo       Int      @db.UnsignedInt
+  ncis         Int
+  PTyp         String?  @db.Char(1)
+  PCis         Int?     @db.SmallInt
+  PMotiv       Int?     @db.UnsignedSmallInt
+  Info         String?  @db.VarChar(80)
+  kVyznam      Int?     @db.TinyInt
+  kStrid       Int?     @db.TinyInt
+  mDesek       Int?     @db.TinyInt
+  Vzdalenost   String?  @db.VarChar(60)
+  Sipka        String?  @db.VarChar(60)
+  Strany       Int?     @db.TinyInt
+  NCena        Int?     @db.MediumInt
+  agentID      Int?     @map("idAgent") @db.UnsignedSmallInt
+  undozak      undozak  @relation(fields: [idUndo], references: [idUndo], onDelete: Cascade, onUpdate: NoAction, map: "undozak_undo")
+
+  @@id([idUndo, ncis])
+  @@index([idUndo], map: "idUndo")
+  @@index([agentID], map: "undozak_agent_idx")
+  @@index([ncis], map: "undozak_nos_idx")
+}
+
+model undonosskup {
+  idUndo   Int     @db.UnsignedInt
+  idObdobi Int     @db.UnsignedSmallInt
+  ncis     Int
+  idSkup   Int     @db.UnsignedSmallInt
+  idMotiv  Int     @db.UnsignedSmallInt
+  produkce Int?    @db.TinyInt
+  nsPozn   String? @db.VarChar(80)
+
+  @@id([idUndo, idObdobi, ncis, idSkup])
+  @@index([ncis], map: "ncis")
+  @@index([idUndo], map: "undoID")
+}
+
+model undozakobdobi {
+  idUndo   Int  @db.UnsignedInt
+  idObdobi Int  @db.UnsignedSmallInt
+  Poradi   Int? @db.TinyInt
+  DCena    Int? @db.SmallInt
+
+  @@id([idUndo, idObdobi])
+  @@index([idUndo], map: "idUndo")
+  @@index([idObdobi], map: "zak_obdobi")
+}

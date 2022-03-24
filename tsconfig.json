@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "lib": ["es2021"],
+    "module": "commonjs",
+    "target": "es2021",
+
+    "esModuleInterop": true,
+    "allowUnusedLabels": true,
+    "declaration": false,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": false,
+    "noImplicitReturns": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "strict": true,
+  },
+  "files": [
+    "index.ts",
+  ],
+}
