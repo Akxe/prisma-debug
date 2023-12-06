@@ -1,0 +1,46 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = []
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Offer {
+  offerID           Int                @id @default(autoincrement()) @map("idZak") @db.UnsignedSmallInt
+  title             String             @map("ZNazev") @db.VarChar(45)
+  currency          Currency           @default(kc) @map("zMena")
+  corporationType   CorporationType    @default(normal) @map("zKorp")
+  parentChildReason ParentChildReason? @map("zVazba")
+
+  @@map("zakazky")
+}
+
+enum Currency {
+  kc        @map("Kč")
+  eur       @map("€")
+  centi_eur @map("c€")
+
+  @@map("zakazky_zMena")
+}
+
+enum CorporationType {
+  normal
+  stores      @map("prodejny")
+  corporation @map("korporace")
+
+  @@map("zakazky_zKorp")
+}
+
+enum ParentChildReason {
+  copy             @map("kopie")
+  continue         @map("pokračování")
+  agentura
+  corporationAgent @map("korp agent")
+  addition         @map("doplnění")
+  prolonged        @map("prodloužení")
+
+  @@map("zakazky_zVazba")
+}
